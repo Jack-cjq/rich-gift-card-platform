@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+/* 确保内容在动画加载前可见 */
+.fade-up {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* 防止内容闪烁 */
+* {
+  box-sizing: border-box;
+}
