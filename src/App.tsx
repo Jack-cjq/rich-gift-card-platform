@@ -247,21 +247,21 @@ const HomePage: React.FC = () => {
                 <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
                   <img 
                     src="/images/fl.png" 
-                    alt="Apple" 
+                    alt="Foot Locker" 
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="text-xl text-gray-600 font-semibold">Apple</span>
+                <span className="text-xl text-gray-600 font-semibold">Foot Locker</span>
               </div>
               <div className="flex flex-col items-center space-y-6">
                 <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
                   <img 
                     src="/images/go.png" 
-                    alt="Google Play" 
+                    alt="RAZER GOLD" 
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="text-xl text-gray-600 font-semibold">Google Play</span>
+                <span className="text-xl text-gray-600 font-semibold">RAZER GOLD</span>
               </div>
               <div className="flex flex-col items-center space-y-6">
                 <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
@@ -332,16 +332,16 @@ const HomePage: React.FC = () => {
                       <div className="text-sm font-semibold">Apple Gift Card</div>
                     </div>
                     
-                    {/* Razer Gold */}
+                    {/* Foot Locker */}
                     <div className="bg-white/20 rounded-xl p-4 text-center">
                       <div className="w-12 h-12 bg-white rounded-lg mx-auto mb-2 flex items-center justify-center p-2">
                         <img 
                           src="/images/fl.png" 
-                          alt="Razer Gold" 
+                          alt="Foot Locker" 
                           className="w-full h-full object-contain"
                         />
                       </div>
-                      <div className="text-sm font-semibold">RAZER GOLD</div>
+                      <div className="text-sm font-semibold">Foot Locker</div>
                     </div>
                     
                     {/* Steam */}
