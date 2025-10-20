@@ -39,7 +39,7 @@ const Services: React.FC = () => {
           <div className="text-center fade-up">
             <div className="flex items-center justify-center space-x-4 mb-6">
               <img 
-                src="/images/Rich-logo.png" 
+                src="/images/logo.png" 
                 alt="Rich Logo" 
                 className="w-16 h-16 object-contain"
               />

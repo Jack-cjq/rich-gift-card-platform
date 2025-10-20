@@ -25,11 +25,11 @@ const Navigation: React.FC = () => {
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <img 
-              src="/images/Rich-logo.png" 
+              src="/images/logo.png" 
               alt="Rich Logo" 
               className="w-10 h-10 object-contain"
             />
-            <span className="text-2xl font-bold text-teal-600">Rich</span>
+            <span className="text-2xl font-bold text-teal-600">IT</span>
           </div>
 
           {/* Navigation Links */}
@@ -179,12 +179,12 @@ const HomePage: React.FC = () => {
               <div className="fade-up mb-8">
                 <div className="flex items-center justify-center space-x-4 mb-6">
                   <img 
-                    src="/images/Rich-logo.png" 
+                    src="/images/logo.png" 
                     alt="Rich Logo" 
                     className="w-16 h-16 object-contain"
                   />
                   <h1 className="text-5xl md:text-7xl font-bold text-gray-900">
-                    Welcome to <span className="text-teal-600">Rich</span>
+                    Welcome to <span className="text-teal-600">IT</span>
                   </h1>
                 </div>
                 <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
@@ -242,56 +242,56 @@ const HomePage: React.FC = () => {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Supported Gift Cards</h3>
               <p className="text-lg text-gray-600">Trade your gift cards from these popular brands</p>
             </div>
-            <div className="flex items-center justify-center space-x-8 md:space-x-12">
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg p-2 md:p-3">
+            <div className="flex items-center justify-center space-x-12 md:space-x-16">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
                   <img 
                     src="/images/fl.png" 
                     alt="Apple" 
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="text-sm text-gray-600 font-medium">Apple</span>
+                <span className="text-xl text-gray-600 font-semibold">Apple</span>
               </div>
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg p-2 md:p-3">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
                   <img 
                     src="/images/go.png" 
                     alt="Google Play" 
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="text-sm text-gray-600 font-medium">Google Play</span>
+                <span className="text-xl text-gray-600 font-semibold">Google Play</span>
               </div>
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg p-2 md:p-3">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
                   <img 
                     src="/images/it.png" 
                     alt="iTunes" 
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="text-sm text-gray-600 font-medium">iTunes</span>
+                <span className="text-xl text-gray-600 font-semibold">iTunes</span>
               </div>
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg p-2 md:p-3">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
                   <img 
                     src="/images/st.png" 
                     alt="Steam" 
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="text-sm text-gray-600 font-medium">Steam</span>
+                <span className="text-xl text-gray-600 font-semibold">Steam</span>
               </div>
-              <div className="flex flex-col items-center space-y-3">
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-white rounded-2xl flex items-center justify-center shadow-lg p-2 md:p-3">
+              <div className="flex flex-col items-center space-y-6">
+                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
                   <img 
                     src="/images/xb.png" 
                     alt="Xbox" 
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <span className="text-sm text-gray-600 font-medium">Xbox</span>
+                <span className="text-xl text-gray-600 font-semibold">Xbox</span>
               </div>
             </div>
           </div>
@@ -410,7 +410,7 @@ const HomePage: React.FC = () => {
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16 fade-up">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Rich?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose IT?</h2>
               <p className="text-lg text-gray-600">
                 We provide the most reliable and efficient gift card trading service in Wuhan
               </p>
@@ -476,7 +476,7 @@ const HomePage: React.FC = () => {
                   ))}
                 </div>
                 <p className="text-gray-600 mb-6">
-                  "Excellent service! Fast and reliable gift card trading. I've been using Rich for over a year now and never had any issues."
+                  "Excellent service! Fast and reliable gift card trading. I've been using IT for over a year now and never had any issues."
                 </p>
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center">

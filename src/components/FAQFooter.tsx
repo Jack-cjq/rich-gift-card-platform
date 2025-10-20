@@ -45,7 +45,7 @@ const FAQFooter: React.FC = () => {
             <div className="fade-up">
               <h2 className="text-4xl font-bold text-teal-600 mb-4">FAQ</h2>
               <p className="text-lg text-gray-600 mb-8">
-                Easily obtain discount rates and secure payments on Rich™.
+                Easily obtain discount rates and secure payments on IT™.
               </p>
 
               <div className="space-y-4">
@@ -59,7 +59,7 @@ const FAQFooter: React.FC = () => {
                   >
                     <span className={`font-semibold transition-colors ${
                       openFAQ === 0 ? 'text-teal-600' : 'text-gray-900'
-                    }`}>How to trade gift cards on Rich?</span>
+                    }`}>How to trade gift cards on IT?</span>
                     <svg 
                       className={`w-5 h-5 transform transition-all duration-300 ${
                         openFAQ === 0 ? 'rotate-180 text-teal-600' : 'text-gray-500'
@@ -169,11 +169,11 @@ const FAQFooter: React.FC = () => {
               <h3 className="text-lg font-semibold mb-4">Redeem a gift card</h3>
               <div className="flex items-center space-x-2 mb-4">
                 <img 
-                  src="/images/Rich-logo.png" 
+                  src="/images/logo.png" 
                   alt="Rich Logo"
                   className="w-8 h-8 object-contain"
                 />
-                <span className="font-bold text-lg">Rich</span>
+                <span className="font-bold text-lg">IT</span>
               </div>
               <button 
                 onClick={() => {
@@ -189,9 +189,9 @@ const FAQFooter: React.FC = () => {
               <p className="text-teal-200">+86 19371138377</p>
             </div>
 
-            {/* Rich */}
+            {/* IT */}
             <div className="fade-up">
-              <h3 className="text-lg font-semibold mb-4">Rich</h3>
+              <h3 className="text-lg font-semibold mb-4">IT</h3>
               <ul className="space-y-2">
                 <li>
                   <a href="/about" className="text-teal-200 hover:text-white transition-colors flex items-center">

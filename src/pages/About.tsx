@@ -134,12 +134,12 @@ const About: React.FC = () => {
           <div className="text-center fade-up">
             <div className="flex items-center justify-center space-x-4 mb-6">
               <img 
-                src="/images/Rich-logo.png" 
+                src="/images/logo.png" 
                 alt="Rich Logo" 
                 className="w-20 h-20 object-contain pulse-animation"
               />
               <h1 className="text-4xl md:text-7xl font-bold text-gray-900">
-                About <span className="text-green-600">Rich</span>
+                About <span className="text-green-600">IT</span>
               </h1>
             </div>
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 max-w-4xl mx-auto shadow-xl">
@@ -147,7 +147,7 @@ const About: React.FC = () => {
                 Wuhan's Largest Gift Card Trading Platform
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                Since our establishment in 2021, Rich has become the most trusted gift card trading platform in Wuhan.
+                Since our establishment in 2021, IT has become the most trusted gift card trading platform in Wuhan.
                 We are committed to providing the highest quality gift card trading services, making every transaction safe, fast, and convenient.
               </p>
               <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500">
@@ -165,7 +165,7 @@ const About: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-up">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Achievements</h2>
-            <p className="text-lg text-gray-600">Data speaks for itself, witnessing Rich's growth</p>
+            <p className="text-lg text-gray-600">Data speaks for itself, witnessing IT's growth</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -216,7 +216,7 @@ const About: React.FC = () => {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-up">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose Rich?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Choose IT?</h2>
             <p className="text-lg text-gray-600">Advantages of Wuhan's leading gift card trading platform</p>
           </div>
           
