@@ -14,6 +14,57 @@ import ChatWidget from './components/ChatWidget';
 // 注册GSAP插件
 gsap.registerPlugin(ScrollTrigger);
 
+// WhatsApp处理函数
+const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quote for my gift card.') => {
+  const phoneNumber = '8619371138377';
+  
+  // 使用更可靠的WhatsApp API格式
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  console.log('WhatsApp URL:', whatsappUrl);
+  
+  try {
+    const newWindow = window.open(whatsappUrl, '_blank');
+    if (!newWindow) {
+      alert('请允许弹窗以打开WhatsApp');
+    }
+  } catch (error) {
+    console.error('WhatsApp链接错误:', error);
+    alert('无法打开WhatsApp，请检查网络连接');
+  }
+  };
+
+// 团队成员WhatsApp处理函数
+const handleTeamWhatsAppClick = (phoneNumber: string, memberName: string) => {
+  const message = `Hello ${memberName}! I would like to get a quote for my gift card.`;
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  
+  try {
+    const newWindow = window.open(whatsappUrl, '_blank');
+    if (!newWindow) {
+      alert('请允许弹窗以打开WhatsApp');
+    }
+  } catch (error) {
+    console.error('WhatsApp链接错误:', error);
+    alert('无法打开WhatsApp，请检查网络连接');
+  }
+};
+
+// Telegram处理函数
+const handleTelegramClick = (username: string) => {
+  const telegramUrl = `https://t.me/${username}`;
+  
+  try {
+    const newWindow = window.open(telegramUrl, '_blank');
+    if (!newWindow) {
+      alert('请允许弹窗以打开Telegram');
+    }
+  } catch (error) {
+    console.error('Telegram链接错误:', error);
+    alert('无法打开Telegram，请检查网络连接');
+  }
+};
+
+
 // Navigation Component
 const Navigation: React.FC = () => {
   const location = useLocation();
@@ -79,12 +130,7 @@ const Navigation: React.FC = () => {
           {/* WhatsApp Button */}
           <div className="flex items-center space-x-4">
             <button 
-              onClick={() => {
-                const phoneNumber = '8619371138377';
-                const message = 'Hello! I would like to get a quote for my gift card.';
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                window.open(whatsappUrl, '_blank');
-              }}
+              onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for my gift card.')}
               className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -143,24 +189,40 @@ const HomePage: React.FC = () => {
       });
     }, mainRef);
 
-    return () => ctx.revert();
-  }, []);
-
-  // Auto-play carousel
-  useEffect(() => {
+    // Auto-play testimonials carousel
+    const carousel = document.getElementById('testimonials-carousel');
     let currentIndex = 0;
-    const totalSlides = 15;
-    
-    const interval = setInterval(() => {
-      const carousel = document.getElementById('feedback-carousel');
+    const totalTestimonials = 15;
+
+    const autoPlay = () => {
       if (carousel) {
-        currentIndex = (currentIndex + 1) % totalSlides;
+        currentIndex = (currentIndex + 1) % totalTestimonials;
         carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
       }
-    }, 3000); // Auto-play every 3 seconds
+    };
 
-    return () => clearInterval(interval);
+    // Auto-play transaction images carousel
+    const transactionCarousel = document.getElementById('transaction-images-carousel');
+    let transactionIndex = 0;
+    const totalTransactions = 15;
+
+    const autoPlayTransactions = () => {
+      if (transactionCarousel) {
+        transactionIndex = (transactionIndex + 1) % totalTransactions;
+        transactionCarousel.style.transform = `translateX(-${transactionIndex * 100}%)`;
+      }
+    };
+
+    const interval = setInterval(autoPlay, 4000); // 4 seconds
+    const transactionInterval = setInterval(autoPlayTransactions, 3000); // 3 seconds
+
+    return () => {
+      ctx.revert();
+      clearInterval(interval);
+      clearInterval(transactionInterval);
+    };
   }, []);
+
 
   return (
     <div ref={mainRef} className="min-h-screen bg-white">
@@ -172,6 +234,29 @@ const HomePage: React.FC = () => {
             <div className="absolute -top-40 -right-40 w-80 h-80 bg-teal-200 rounded-full opacity-20 float"></div>
             <div className="absolute top-20 -left-20 w-60 h-60 bg-green-200 rounded-full opacity-20 float" style={{animationDelay: '1s'}}></div>
             <div className="absolute bottom-20 right-20 w-40 h-40 bg-blue-200 rounded-full opacity-20 float" style={{animationDelay: '2s'}}></div>
+          </div>
+
+          {/* Floating Brand Logos */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Foot Locker Logo */}
+            <div className="floating-logo float-random-1" style={{top: '20%', left: '15%'}}>
+              <img src="/images/fl.png" alt="Foot Locker" />
+            </div>
+            
+            {/* RAZER GOLD Logo */}
+            <div className="floating-logo float-random-2" style={{top: '30%', right: '20%'}}>
+              <img src="/images/go.png" alt="RAZER GOLD" />
+            </div>
+            
+            {/* iTunes Logo */}
+            <div className="floating-logo float-random-3" style={{bottom: '25%', left: '25%'}}>
+              <img src="/images/it.png" alt="iTunes" />
+            </div>
+            
+            {/* Steam Logo */}
+            <div className="floating-logo float-random-4" style={{bottom: '35%', right: '15%'}}>
+              <img src="/images/st.png" alt="Steam" />
+            </div>
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -194,12 +279,7 @@ const HomePage: React.FC = () => {
 
               <div className="fade-up flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
                 <button 
-                  onClick={() => {
-                    const phoneNumber = '8619371138377';
-                    const message = 'Hello! I would like to start trading my gift cards.';
-                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappUrl, '_blank');
-                  }}
+                  onClick={() => handleWhatsAppClick('Hello! I would like to start trading my gift cards.')}
                   className="bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl"
                 >
                   Start Trading Now
@@ -242,56 +322,120 @@ const HomePage: React.FC = () => {
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Supported Gift Cards</h3>
               <p className="text-lg text-gray-600">Trade your gift cards from these popular brands</p>
             </div>
-            <div className="flex items-center justify-center space-x-12 md:space-x-16">
-              <div className="flex flex-col items-center space-y-6">
-                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
-                  <img 
-                    src="/images/fl.png" 
-                    alt="Foot Locker" 
-                    className="w-full h-full object-contain"
-                  />
+            
+            {/* 自动轮播的礼品卡 */}
+            <div className="relative overflow-hidden fade-up">
+              <div className="flex animate-scroll" id="gift-cards-carousel" style={{width: '200%'}}>
+                {/* 第一组礼品卡 */}
+                <div className="flex items-center justify-center space-x-12 md:space-x-16 flex-shrink-0">
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/fl.png" 
+                        alt="Foot Locker" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">Foot Locker</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/go.png" 
+                        alt="RAZER GOLD" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">RAZER GOLD</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/it.png" 
+                        alt="iTunes" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">iTunes</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/st.png" 
+                        alt="Steam" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">Steam</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/xb.png" 
+                        alt="Xbox" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">Xbox</span>
+                  </div>
                 </div>
-                <span className="text-xl text-gray-600 font-semibold">Foot Locker</span>
-              </div>
-              <div className="flex flex-col items-center space-y-6">
-                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
-                  <img 
-                    src="/images/go.png" 
-                    alt="RAZER GOLD" 
-                    className="w-full h-full object-contain"
-                  />
+                
+                {/* 间距 */}
+                <div className="w-24 flex-shrink-0"></div>
+                
+                {/* 第二组礼品卡（重复，用于无缝滚动） */}
+                <div className="flex items-center justify-center space-x-12 md:space-x-16 flex-shrink-0">
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/fl.png" 
+                        alt="Foot Locker" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">Foot Locker</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/go.png" 
+                        alt="RAZER GOLD" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">RAZER GOLD</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/it.png" 
+                        alt="iTunes" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">iTunes</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/st.png" 
+                        alt="Steam" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">Steam</span>
+                  </div>
+                  <div className="flex flex-col items-center space-y-6">
+                    <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
+                      <img 
+                        src="/images/xb.png" 
+                        alt="Xbox" 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-xl text-gray-600 font-semibold">Xbox</span>
+                  </div>
                 </div>
-                <span className="text-xl text-gray-600 font-semibold">RAZER GOLD</span>
-              </div>
-              <div className="flex flex-col items-center space-y-6">
-                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
-                  <img 
-                    src="/images/it.png" 
-                    alt="iTunes" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="text-xl text-gray-600 font-semibold">iTunes</span>
-              </div>
-              <div className="flex flex-col items-center space-y-6">
-                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
-                  <img 
-                    src="/images/st.png" 
-                    alt="Steam" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="text-xl text-gray-600 font-semibold">Steam</span>
-              </div>
-              <div className="flex flex-col items-center space-y-6">
-                <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-3xl flex items-center justify-center shadow-xl p-6 md:p-8">
-                  <img 
-                    src="/images/xb.png" 
-                    alt="Xbox" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <span className="text-xl text-gray-600 font-semibold">Xbox</span>
               </div>
             </div>
           </div>
@@ -456,86 +600,6 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Customer Testimonials Section */}
-        <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16 fade-up">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
-              <p className="text-lg text-gray-600">
-                Don't just take our word for it - hear from our satisfied customers
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="fade-up bg-gray-50 rounded-2xl p-8">
-                <div className="flex items-center space-x-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-6">
-                  "Excellent service! Fast and reliable gift card trading. I've been using IT for over a year now and never had any issues."
-                </p>
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-semibold">J</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">John Smith</div>
-                    <div className="text-sm text-gray-500">Regular Customer</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="fade-up bg-gray-50 rounded-2xl p-8">
-                <div className="flex items-center space-x-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-6">
-                  "Best rates in Wuhan! Highly recommended for gift card trading. The process is simple and the support team is very helpful."
-                </p>
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-semibold">M</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">Maria Garcia</div>
-                    <div className="text-sm text-gray-500">Business Owner</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="fade-up bg-gray-50 rounded-2xl p-8">
-                <div className="flex items-center space-x-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-                <p className="text-gray-600 mb-6">
-                  "Professional service with 24/7 support. Very satisfied with the transaction speed and security. Will definitely use again!"
-                </p>
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white font-semibold">D</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">David Chen</div>
-                    <div className="text-sm text-gray-500">Student</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Featured Gift Cards Section */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -586,7 +650,10 @@ const HomePage: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">XBox</h3>
                 <p className="text-gray-600 mb-6">XBox Physical Card</p>
-                <button className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600">
+                <button 
+                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.')}
+                  className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600"
+                >
                   Enquire Now
                 </button>
               </div>
@@ -628,7 +695,10 @@ const HomePage: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Razer</h3>
                 <p className="text-gray-600 mb-6">Razer Gold Card / code</p>
-                <button className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600">
+                <button 
+                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.')}
+                  className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600"
+                >
                   Enquire Now
         </button>
               </div>
@@ -686,51 +756,639 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
-        {/* Customer Feedback Section */}
-        <section className="py-12 bg-white">
+        {/* Our Team Section */}
+        <section className="py-20 bg-gradient-to-br from-green-50 to-teal-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-8 fade-up">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Customer Feedback</h2>
-              <p className="text-lg text-gray-600">Real testimonials from our satisfied customers</p>
+            <div className="text-center mb-16 fade-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Team</h2>
+              <p className="text-lg text-gray-600">Meet our professional trading team</p>
             </div>
             
-            {/* Carousel Container */}
-            <div className="relative overflow-hidden fade-up mb-6 h-96">
-              <div className="flex transition-transform duration-500 ease-in-out h-full" id="feedback-carousel">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((num, index) => (
-                  <div key={num} className="w-full flex-shrink-0 px-4 h-full flex items-center">
-                    <div className="max-w-sm mx-auto w-full">
-                      <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
-                        <div className="aspect-[3/4] rounded-xl overflow-hidden mb-4 flex-shrink-0">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Trader_Ki */}
+              <div className="fade-up bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow text-center">
+                <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden shadow-lg">
+                  <img 
+                    src="/images/t1.png" 
+                    alt="Trader_Ki" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Trader_Ki</h3>
+                <p className="text-gray-600 mb-4">Manageress</p>
+                <div className="flex justify-center space-x-3">
+                  <button 
+                    onClick={() => handleTeamWhatsAppClick('8619371138377', 'Trader_Ki')}
+                    className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                    </svg>
+                  </button>
+                  <button 
+                    onClick={() => handleTelegramClick('IT_gift_card')}
+                    className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Trader_Xing */}
+              <div className="fade-up bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow text-center">
+                <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden shadow-lg">
+                  <img 
+                    src="/images/t2.png" 
+                    alt="Trader_Xing" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Trader_Xing</h3>
+                <p className="text-gray-600 mb-4">Manageress</p>
+                <div className="flex justify-center space-x-3">
+                  <button 
+                    onClick={() => handleTeamWhatsAppClick('8619371138377', 'Trader_Xing')}
+                    className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                    </svg>
+                  </button>
+                  <button 
+                    onClick={() => handleTelegramClick('IT_gift_card')}
+                    className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Trader_Tian */}
+              <div className="fade-up bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow text-center">
+                <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden shadow-lg">
+                  <img 
+                    src="/images/t3.png" 
+                    alt="Trader_Tian" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Trader_Tian</h3>
+                <p className="text-gray-600 mb-4">Manageress</p>
+                <div className="flex justify-center space-x-3">
+                  <button 
+                    onClick={() => handleTeamWhatsAppClick('8613387167170', 'Trader_Tian')}
+                    className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                    </svg>
+                  </button>
+                  <button 
+                    onClick={() => handleTelegramClick('IT_gift_card')}
+                    className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Trader_Zhe */}
+              <div className="fade-up bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow text-center">
+                <div className="w-20 h-20 rounded-full mx-auto mb-4 overflow-hidden shadow-lg">
+                  <img 
+                    src="/images/t4.png" 
+                    alt="Trader_Zhe" 
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Trader_Zhe</h3>
+                <p className="text-gray-600 mb-4">Manageress</p>
+                <div className="flex justify-center space-x-3">
+                  <button 
+                    onClick={() => handleTeamWhatsAppClick('8613387167170', 'Trader_Zhe')}
+                    className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                    </svg>
+                  </button>
+                  <button 
+                    onClick={() => handleTelegramClick('IT_gift_card')}
+                    className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        {/* Customer Feedback Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16 fade-up">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Our Customers Say</h2>
+              <p className="text-lg text-gray-600">Don't just take our word for it - hear from our satisfied customers</p>
+            </div>
+
+            {/* Transaction Details Images Carousel */}
+            <div className="mb-16 fade-up">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Transaction Details</h3>
+                <p className="text-lg text-gray-600">Real transaction screenshots from our customers</p>
+              </div>
+              
+              <div className="relative overflow-hidden">
+                <div className="flex transition-transform duration-500 ease-in-out" id="transaction-images-carousel">
+                  {/* Transaction Images 1-15 */}
+                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((num) => (
+                    <div key={num} className="w-full flex-shrink-0 px-4">
+                      <div className="max-w-md mx-auto">
+                        <div className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-shadow">
                           <img 
                             src={`/images/${num}.png`} 
-                            alt={`Customer feedback ${num}`}
-                            className="w-full h-full object-cover"
+                            alt={`Transaction ${num}`}
+                            className="w-full h-auto rounded-lg object-contain"
+                            style={{maxHeight: '400px'}}
                           />
+                          <div className="mt-4 text-center">
+                            <span className="text-sm text-gray-500">Transaction #{num}</span>
+                          </div>
                         </div>
-                        <div className="flex items-center space-x-1 mb-2 flex-shrink-0">
-                          {[...Array(5)].map((_, i) => (
-                            <svg key={i} className="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                          ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Navigation Arrows */}
+                <button 
+                  onClick={() => {
+                    const carousel = document.getElementById('transaction-images-carousel');
+                    if (carousel) {
+                      const currentTransform = carousel.style.transform;
+                      const currentIndex = currentTransform ? parseInt(currentTransform.match(/-(\d+)%/)![1]) / 100 : 0;
+                      const newIndex = currentIndex === 0 ? 14 : currentIndex - 1;
+                      carousel.style.transform = `translateX(-${newIndex * 100}%)`;
+                    }
+                  }}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-colors z-10"
+                >
+                  <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                
+                <button 
+                  onClick={() => {
+                    const carousel = document.getElementById('transaction-images-carousel');
+                    if (carousel) {
+                      const currentTransform = carousel.style.transform;
+                      const currentIndex = currentTransform ? parseInt(currentTransform.match(/-(\d+)%/)![1]) / 100 : 0;
+                      const newIndex = (currentIndex + 1) % 15;
+                      carousel.style.transform = `translateX(-${newIndex * 100}%)`;
+                    }
+                  }}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-colors z-10"
+                >
+                  <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+              
+              {/* Auto-play indicator */}
+              <div className="text-center mt-4">
+                <div className="inline-flex items-center space-x-2 text-sm text-gray-500">
+                  <div className="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></div>
+                  <span>Auto-playing transaction details</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Customer Testimonials Carousel */}
+            <div className="relative overflow-hidden fade-up">
+              <div className="flex transition-transform duration-500 ease-in-out" id="testimonials-carousel">
+                {/* Testimonial 1 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Excellent service! Fast and reliable gift card trading. I've been using IT for over a year now and never had any issues."
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-teal-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">J</span>
                         </div>
-                        <p className="text-gray-600 text-sm flex-grow">
-                          {index % 3 === 0 && "Excellent service! Fast and reliable gift card trading."}
-                          {index % 3 === 1 && "Best rates in Wuhan! Highly recommended for gift card trading."}
-                          {index % 3 === 2 && "Professional service with 24/7 support. Very satisfied!"}
-                        </p>
+                        <div>
+                          <div className="font-semibold text-gray-900">John Smith</div>
+                          <div className="text-sm text-gray-500">Regular Customer</div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                ))}
+                </div>
+
+                {/* Testimonial 2 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Best rates in Wuhan! Highly recommended for gift card trading. The process is simple and the support team is very helpful."
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">M</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Maria Garcia</div>
+                          <div className="text-sm text-gray-500">Business Owner</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 3 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Professional service with 24/7 support. Very satisfied with the transaction speed and security. Will definitely use again!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">D</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">David Chen</div>
+                          <div className="text-sm text-gray-500">Student</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 4 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Amazing platform! The rates are competitive and the process is so smooth. I've recommended IT to all my friends."
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">S</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Sarah Johnson</div>
+                          <div className="text-sm text-gray-500">Frequent Trader</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 5 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Lightning fast transactions! I sold my Steam cards in minutes and got paid immediately. Highly recommended!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">A</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Alex Wang</div>
+                          <div className="text-sm text-gray-500">Gamer</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 6 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Trustworthy and reliable! I've been trading with IT for months and always get the best rates. Customer service is excellent."
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">L</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Lisa Zhang</div>
+                          <div className="text-sm text-gray-500">Online Seller</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 7 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Outstanding customer service! The team is always helpful and responds quickly. Best gift card exchange platform in Wuhan!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">R</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Robert Liu</div>
+                          <div className="text-sm text-gray-500">Tech Enthusiast</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 8 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Simple, fast, and secure! I love how easy it is to trade my gift cards. The rates are always fair and competitive."
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-red-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">E</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Emma Wilson</div>
+                          <div className="text-sm text-gray-500">Frequent User</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 9 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Perfect platform for gift card trading! The process is straightforward and I always get my money quickly. 5 stars!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">T</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Tom Brown</div>
+                          <div className="text-sm text-gray-500">Regular Trader</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 10 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Excellent rates and instant payments! I've tried other platforms but IT is definitely the best. Highly recommended!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-lime-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">K</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Kevin Lee</div>
+                          <div className="text-sm text-gray-500">Gift Card Collector</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 11 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Fast, reliable, and trustworthy! I've been using IT for months and never had any problems. Great customer support too!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">N</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Nancy Chen</div>
+                          <div className="text-sm text-gray-500">Online Buyer</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 12 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Amazing service! The rates are always competitive and the transaction process is super smooth. Will definitely continue using IT!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">M</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Mike Zhang</div>
+                          <div className="text-sm text-gray-500">Digital Nomad</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 13 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Top-notch platform! The security is excellent and I always get the best rates. Customer service is responsive and helpful."
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-violet-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">H</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Helen Wang</div>
+                          <div className="text-sm text-gray-500">Tech Professional</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 14 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Reliable and fast! I've been trading gift cards for years and IT offers the best rates and fastest processing. Highly recommended!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-rose-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">C</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Chris Liu</div>
+                          <div className="text-sm text-gray-500">Experienced Trader</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Testimonial 15 */}
+                <div className="w-full flex-shrink-0 px-4">
+                  <div className="max-w-sm mx-auto">
+                    <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+                      <div className="flex items-center space-x-1 mb-4">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                      <p className="text-gray-600 mb-6 leading-relaxed">
+                        "Perfect experience every time! The platform is user-friendly, secure, and offers great rates. I've recommended IT to many friends!"
+                      </p>
+                      <div className="flex items-center space-x-3">
+                        <div className="w-12 h-12 bg-sky-500 rounded-full flex items-center justify-center">
+                          <span className="text-white font-bold text-lg">A</span>
+                        </div>
+                        <div>
+                          <div className="font-semibold text-gray-900">Anna Kim</div>
+                          <div className="text-sm text-gray-500">Loyal Customer</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Navigation Arrows */}
               <button 
                 className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-900 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-10"
                 onClick={() => {
-                  const carousel = document.getElementById('feedback-carousel');
+                  const carousel = document.getElementById('testimonials-carousel');
                   if (carousel) {
                     const currentTransform = carousel.style.transform;
                     const currentIndex = currentTransform ? parseInt(currentTransform.match(/-(\d+)%/)![1]) / 100 : 0;
@@ -747,7 +1405,7 @@ const HomePage: React.FC = () => {
               <button 
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-600 hover:text-gray-900 w-12 h-12 rounded-full shadow-lg flex items-center justify-center transition-all duration-300 z-10"
                 onClick={() => {
-                  const carousel = document.getElementById('feedback-carousel');
+                  const carousel = document.getElementById('testimonials-carousel');
                   if (carousel) {
                     const currentTransform = carousel.style.transform;
                     const currentIndex = currentTransform ? parseInt(currentTransform.match(/-(\d+)%/)![1]) / 100 : 0;
@@ -767,21 +1425,21 @@ const HomePage: React.FC = () => {
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((dot) => (
                 <button
                   key={dot}
-                  className="w-2 h-2 rounded-full bg-gray-300 hover:bg-green-600 transition-colors duration-300"
+                  className="w-2 h-2 rounded-full bg-gray-300 hover:bg-teal-500 transition-colors duration-300"
                   onClick={() => {
-                    const carousel = document.getElementById('feedback-carousel');
+                    const carousel = document.getElementById('testimonials-carousel');
                     if (carousel) {
                       carousel.style.transform = `translateX(-${(dot - 1) * 100}%)`;
                     }
                   }}
-                ></button>
+                />
               ))}
             </div>
 
-            {/* Auto-play indicator */}
-            <div className="text-center mt-4 fade-up">
-              <p className="text-sm text-gray-500">Customer feedback rotates automatically every 3 seconds</p>
-            </div>
+            {/* Auto-play Indicator */}
+            {/* <div className="text-center mt-4 fade-up">
+              <p className="text-sm text-gray-500">Customer testimonials rotate automatically every 4 seconds</p>
+            </div> */}
           </div>
         </section>
 

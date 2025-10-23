@@ -280,7 +280,7 @@ const Services: React.FC = () => {
                   onClick={() => {
                     const phoneNumber = '8619371138377';
                     const message = 'Hello! I would like to get a quote for gift cards.';
-                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
                   }}
                   className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
@@ -322,7 +322,7 @@ const Services: React.FC = () => {
                   onClick={() => {
                     const phoneNumber = '8619371138377';
                     const message = 'Hello! I would like to get a quote for gift cards.';
-                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
                   }}
                   className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
@@ -331,18 +331,18 @@ const Services: React.FC = () => {
                 </button>
             </div>
 
-            {/* Razer Gold Card */}
+            {/* Foot Locker Card */}
             <div className="fade-up bg-teal-50 border border-teal-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex items-center space-x-3 mb-4">
                 <img 
                   src="/images/fl.png" 
-                  alt="Razer Gold" 
+                  alt="Foot Locker" 
                   className="w-8 h-8 object-contain"
                 />
-                <span className="font-semibold text-gray-700">RAZER GOLD</span>
+                <span className="font-semibold text-gray-700">Foot Locker</span>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Razer</h3>
-              <p className="text-gray-600 mb-6">Razer Gold Card / code</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Foot Locker</h3>
+              <p className="text-gray-600 mb-6">Foot Locker Card / code</p>
               <button className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600">
                 Enquire Now
               </button>

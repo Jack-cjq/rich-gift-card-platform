@@ -179,7 +179,7 @@ const FAQFooter: React.FC = () => {
                 onClick={() => {
                   const phoneNumber = '8619371138377';
                   const message = 'Hello! I would like to trade my gift cards now.';
-                  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                   window.open(whatsappUrl, '_blank');
                 }}
                 className="text-teal-200 mb-4 hover:text-white transition-colors cursor-pointer"

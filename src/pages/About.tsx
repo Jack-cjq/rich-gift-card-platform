@@ -299,6 +299,60 @@ const About: React.FC = () => {
         </div>
       </section>
 
+      {/* 公司图片展示 */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 fade-up">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Company</h2>
+            <p className="text-lg text-gray-600">Professional team, modern office, and excellent working environment</p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="fade-up">
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img 
+                  src="/images/c1.jpg" 
+                  alt="Company Office 1" 
+                  className="w-full h-64 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Modern Office</h3>
+                  <p className="text-gray-600">Professional working environment with advanced facilities</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="fade-up">
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img 
+                  src="/images/c2.jpg" 
+                  alt="Company Office 2" 
+                  className="w-full h-64 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Team Collaboration</h3>
+                  <p className="text-gray-600">Dedicated team working together to provide the best service</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="fade-up">
+              <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                <img 
+                  src="/images/c3.jpg" 
+                  alt="Company Office 3" 
+                  className="w-full h-64 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Professional Environment</h3>
+                  <p className="text-gray-600">State-of-the-art facilities for efficient operations</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 服务能力 */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -378,7 +432,7 @@ const About: React.FC = () => {
                 onClick={() => {
                   const phoneNumber = '8619371138377';
                   const message = 'Hello! I would like to get a WhatsApp consultation for gift card trading.';
-                  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                   window.open(whatsappUrl, '_blank');
                 }}
                 className="bg-white text-green-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors flex items-center justify-center space-x-2"
@@ -392,7 +446,7 @@ const About: React.FC = () => {
                 onClick={() => {
                   const phoneNumber = '8619371138377';
                   const message = 'Hello! I would like to start trading my gift cards now.';
-                  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                   window.open(whatsappUrl, '_blank');
                 }}
                 className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-green-600 transition-colors"
