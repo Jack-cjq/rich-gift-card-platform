@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { trackConversion, trackEvent, trackPageView } from './utils/gtag';
+import { trackConversion, trackEvent, trackPageView, trackPageConversion } from './utils/gtag';
 import './App.css';
 
 // Import pages
@@ -1500,6 +1500,9 @@ const PageTracker: React.FC = () => {
     // 跟踪页面浏览
     const pageName = getPageName(location.pathname);
     trackPageView(pageName);
+    
+    // 页面浏览转化跟踪 - 使用原来的标签ID
+    trackPageConversion();
     
     // 跟踪自定义事件
     trackEvent('page_view', {

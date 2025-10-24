@@ -7,8 +7,19 @@ declare global {
   }
 }
 
-// 转化跟踪函数
+// 转化跟踪函数 - WhatsApp和Telegram按钮使用
 export const trackConversion = () => {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', 'conversion', {
+      'send_to': 'AW-17674508543/R1TzCMSB6rIbEP-x7utB',
+      'value': 1.0,
+      'currency': 'CNY'
+    });
+  }
+};
+
+// 页面浏览转化跟踪 - 使用原来的标签ID
+export const trackPageConversion = () => {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', 'conversion', {
       'send_to': 'AW-17674508543/bJa3CN3kr7IbEP-x7utB',
