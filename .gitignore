@@ -12,6 +12,15 @@ dist
 dist-ssr
 *.local
 
+# AWS Keys and sensitive files
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.local
+.env.production
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

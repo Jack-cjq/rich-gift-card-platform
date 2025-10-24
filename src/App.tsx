@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { trackConversion, trackEvent, trackPageView } from './utils/gtag';
 import './App.css';
 
 // Import pages
@@ -17,6 +18,14 @@ gsap.registerPlugin(ScrollTrigger);
 // WhatsApp处理函数
 const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quote for my gift card.') => {
   const phoneNumber = '8619371138377';
+  
+  // 跟踪转化事件
+  trackConversion();
+  trackEvent('whatsapp_click', {
+    event_category: 'engagement',
+    event_label: 'whatsapp_contact',
+    value: 1
+  });
   
   // 使用更可靠的WhatsApp API格式
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
@@ -36,6 +45,15 @@ const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quo
 // 团队成员WhatsApp处理函数
 const handleTeamWhatsAppClick = (phoneNumber: string, memberName: string) => {
   const message = `Hello ${memberName}! I would like to get a quote for my gift card.`;
+  
+  // 跟踪转化事件
+  trackConversion();
+  trackEvent('team_whatsapp_click', {
+    event_category: 'engagement',
+    event_label: `team_contact_${memberName}`,
+    value: 1
+  });
+  
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   
   try {
@@ -52,6 +70,14 @@ const handleTeamWhatsAppClick = (phoneNumber: string, memberName: string) => {
 // Telegram处理函数
 const handleTelegramClick = (username: string) => {
   const telegramUrl = `https://t.me/${username}`;
+  
+  // 跟踪转化事件
+  trackConversion();
+  trackEvent('telegram_click', {
+    event_category: 'engagement',
+    event_label: `telegram_contact_${username}`,
+    value: 1
+  });
   
   try {
     const newWindow = window.open(telegramUrl, '_blank');
@@ -1450,11 +1476,48 @@ const HomePage: React.FC = () => {
   );
 };
 
+// 页面浏览跟踪组件
+const PageTracker: React.FC = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // 获取页面名称
+    const getPageName = (pathname: string) => {
+      switch (pathname) {
+        case '/':
+          return 'Home';
+        case '/about':
+          return 'About';
+        case '/services':
+          return 'Services';
+        case '/contact':
+          return 'Contact';
+        default:
+          return 'Unknown';
+      }
+    };
+
+    // 跟踪页面浏览
+    const pageName = getPageName(location.pathname);
+    trackPageView(pageName);
+    
+    // 跟踪自定义事件
+    trackEvent('page_view', {
+      page_title: pageName,
+      page_location: window.location.href,
+      page_path: location.pathname
+    });
+  }, [location]);
+
+  return null; // 这个组件不渲染任何内容
+};
+
 // Main App Component
 const App: React.FC = () => {
   return (
     <Router>
       <div className="min-h-screen">
+        <PageTracker />
         <Navigation />
         <Routes>
           <Route path="/" element={<HomePage />} />
