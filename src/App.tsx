@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { trackConversion, trackEvent, trackPageView, trackPageConversion } from './utils/gtag';
+import { generateEventId, getFacebookClickId, trackPixel, sendToCapi } from './utils/fb';
 import './App.css';
 
 // Import pages
@@ -25,6 +26,20 @@ const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quo
     event_category: 'engagement',
     event_label: 'whatsapp_contact',
     value: 1
+  });
+  // Facebook Pixel + CAPI（可选）
+  const eventId = generateEventId();
+  const { fbp, fbc } = getFacebookClickId();
+  trackPixel('Lead', { value: 1, currency: 'CNY' }, eventId);
+  sendToCapi({
+    event_name: 'Lead',
+    event_time: Math.floor(Date.now() / 1000),
+    event_id: eventId,
+    action_source: 'website',
+    event_source_url: window.location.href,
+    fbp,
+    fbc,
+    custom_data: { value: 1, currency: 'CNY' }
   });
   
   // 使用更可靠的WhatsApp API格式
@@ -53,6 +68,20 @@ const handleTeamWhatsAppClick = (phoneNumber: string, memberName: string) => {
     event_label: `team_contact_${memberName}`,
     value: 1
   });
+  // Facebook Pixel + CAPI（可选）
+  const eventId = generateEventId();
+  const { fbp, fbc } = getFacebookClickId();
+  trackPixel('Lead', { value: 1, currency: 'CNY' }, eventId);
+  sendToCapi({
+    event_name: 'Lead',
+    event_time: Math.floor(Date.now() / 1000),
+    event_id: eventId,
+    action_source: 'website',
+    event_source_url: window.location.href,
+    fbp,
+    fbc,
+    custom_data: { value: 1, currency: 'CNY', team_member: memberName }
+  });
   
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
   
@@ -78,6 +107,20 @@ const handleTelegramClick = (username: string) => {
     event_label: `telegram_contact_${username}`,
     value: 1
   });
+  // Facebook Pixel + CAPI（可选）
+  const eventId = generateEventId();
+  const { fbp, fbc } = getFacebookClickId();
+  trackPixel('Lead', { value: 1, currency: 'CNY' }, eventId);
+  sendToCapi({
+    event_name: 'Lead',
+    event_time: Math.floor(Date.now() / 1000),
+    event_id: eventId,
+    action_source: 'website',
+    event_source_url: window.location.href,
+    fbp,
+    fbc,
+    custom_data: { value: 1, currency: 'CNY', channel: 'telegram', username }
+  });
   
   try {
     const newWindow = window.open(telegramUrl, '_blank');
@@ -100,6 +143,20 @@ const handleTikTokClick = (username: string) => {
     event_category: 'engagement',
     event_label: `tiktok_contact_${username}`,
     value: 1
+  });
+  // Facebook Pixel + CAPI（可选）
+  const eventId = generateEventId();
+  const { fbp, fbc } = getFacebookClickId();
+  trackPixel('Lead', { value: 1, currency: 'CNY' }, eventId);
+  sendToCapi({
+    event_name: 'Lead',
+    event_time: Math.floor(Date.now() / 1000),
+    event_id: eventId,
+    action_source: 'website',
+    event_source_url: window.location.href,
+    fbp,
+    fbc,
+    custom_data: { value: 1, currency: 'CNY', channel: 'tiktok', username }
   });
   
   try {
