@@ -11,7 +11,7 @@ const Contact: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.utils.toArray('.fade-up').forEach((element: any) => {
+      gsap.utils.toArray<Element>('.fade-up').forEach((element) => {
         gsap.fromTo(element, 
           { opacity: 0, y: 30 },
           {
@@ -87,7 +87,7 @@ const Contact: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">WhatsApp</h3>
-                  <p className="text-gray-600">+86 13387167170</p>
+                  <p className="text-gray-600">+86 153 3721 1812</p>
                 </div>
               </div>
             </div>

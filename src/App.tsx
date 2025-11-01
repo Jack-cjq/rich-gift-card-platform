@@ -1007,7 +1007,7 @@ const HomePage: React.FC = () => {
                 <p className="text-gray-600 mb-4">Manageress</p>
                 <div className="flex justify-center space-x-3">
                   <button 
-                    onClick={() => handleTeamWhatsAppClick('8613387167170', 'Trader_Tian')}
+                    onClick={() => handleTeamWhatsAppClick('8615337211812', 'Trader_Tian')}
                     className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -1046,7 +1046,7 @@ const HomePage: React.FC = () => {
                 <p className="text-gray-600 mb-4">Manageress</p>
                 <div className="flex justify-center space-x-3">
                   <button 
-                    onClick={() => handleTeamWhatsAppClick('8613387167170', 'Trader_Zhe')}
+                    onClick={() => handleTeamWhatsAppClick('8615337211812', 'Trader_Zhe')}
                     className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
