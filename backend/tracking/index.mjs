@@ -20,44 +20,77 @@ function hashPII(value) {
   return crypto.createHash('sha256').update(normalized, 'utf8').digest('hex');
 }
 
-// CORS headers - will be set by Function URL, but kept here as fallback
-const corsHeaders = {};
+// Get origin from request
+const getOrigin = (event) => {
+  const headers = event.headers || {};
+  const origin = headers.origin || headers.Origin || headers['x-forwarded-origin'] || '*';
+  // Only allow specific origins
+  const allowedOrigins = [
+    'https://www.itgiftcard.com',
+    'http://localhost:5174',
+    'http://localhost:5173',
+  ];
+  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+};
 
-const ok = (data) => ({
+const ok = (data, origin) => ({
   statusCode: 200,
-  headers: { 'content-type': 'application/json', ...corsHeaders },
+  headers: {
+    'content-type': 'application/json',
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'content-type, x-consent',
+  },
   body: JSON.stringify({ ok: true, ...data }),
 });
 
-const bad = (code, msg) => ({
+const bad = (code, msg, origin) => ({
   statusCode: code,
-  headers: { 'content-type': 'application/json', ...corsHeaders },
+  headers: {
+    'content-type': 'application/json',
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'content-type, x-consent',
+  },
   body: JSON.stringify({ ok: false, error: msg }),
 });
 
 export const handler = async (event) => {
   const method = event.requestContext?.http?.method || event.httpMethod;
-  // Preflight - CORS handled by Function URL
-  if (method === 'OPTIONS') return { statusCode: 204, body: '' };
-  if (method !== 'POST') return bad(405, 'method_not_allowed');
+  const origin = getOrigin(event);
+  
+  // Preflight - return CORS headers
+  if (method === 'OPTIONS') {
+    return {
+      statusCode: 204,
+      headers: {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'content-type, x-consent',
+      },
+      body: '',
+    };
+  }
+  
+  if (method !== 'POST') return bad(405, 'method_not_allowed', origin);
 
   // Check feature flag
   if (process.env.TRACKING_ENABLED !== 'true') {
-    return ok({ tracking_disabled: true });
+    return ok({ tracking_disabled: true }, origin);
   }
 
   let body;
   try {
     body = JSON.parse(event.body || '{}');
   } catch {
-    return bad(400, 'invalid_json');
+    return bad(400, 'invalid_json', origin);
   }
 
   const { event_name, pii = {}, page, ref, cta_id, form_type, timestamp, client_id } = body;
 
   // Validate event_name
   if (!['af_link_click', 'af_lead'].includes(event_name)) {
-    return bad(400, 'invalid_event_name');
+    return bad(400, 'invalid_event_name', origin);
   }
 
   // Enrich with IP and UA (handle header case variations)
@@ -114,7 +147,8 @@ export const handler = async (event) => {
   // Build Meta CAPI payload
   const metaPixelId = process.env.FB_PIXEL_ID;
   const metaToken = process.env.FB_ACCESS_TOKEN;
-  const metaEventName = event_name === 'af_lead' ? 'Lead' : 'Button_Click';
+  // Meta standard events: Lead for form submission, Contact for button clicks (inquiry/contact intent)
+  const metaEventName = event_name === 'af_lead' ? 'Lead' : 'Contact';
 
   const metaBody = {
     data: [
@@ -188,6 +222,6 @@ export const handler = async (event) => {
     meta_status: results.meta?.status,
   });
 
-  return ok({ results });
+  return ok({ results }, origin);
 };
 
