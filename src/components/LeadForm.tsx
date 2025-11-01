@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { submitLead } from '../utils/lead';
+import { trackLead } from '../utils/tracker';
+
 const LeadForm = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -19,6 +21,12 @@ const LeadForm = () => {
     try {
       setLoading(true);
       await submitLead(payload);
+      // Track lead event after successful submission
+      trackLead('contact', {
+        email: payload.email,
+        phone: payload.phone,
+        name: payload.name,
+      });
       setMessage('Submitted successfully. We will contact you soon.');
       formEl.reset();
     } catch (err: unknown) {
@@ -32,7 +40,7 @@ const LeadForm = () => {
   };
 
   return (
-    <form onSubmit={onSubmit} className="fade-up bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
+    <form onSubmit={onSubmit} data-track="lead" id="contactForm" className="fade-up bg-white border border-gray-200 rounded-2xl p-8 shadow-lg">
       <h3 className="text-xl font-semibold text-gray-900 mb-4">Leave your information</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input name="name" placeholder="Name" required className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-teal-500" />

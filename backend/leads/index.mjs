@@ -97,7 +97,7 @@ export const handler = async (event) => {
               <p style="color: #1f2937; font-weight: 600; margin: 0 0 12px 0;">Contact Us:</p>
               <div style="margin-bottom: 10px;">
                 <span style="color: #25D366; font-weight: 600;">WhatsApp:</span>
-                <a href="https://wa.me/8619371138377" style="color: #14b8a6; text-decoration: none; margin-left: 8px;">+86 19371138377</a>
+                <a href="https://wa.me/8615337211812" style="color: #14b8a6; text-decoration: none; margin-left: 8px;">+86 153 3721 1812</a>
                 <span style="color: #6b7280; margin: 0 8px;">or</span>
                 <a href="https://wa.me/8613387167170" style="color: #14b8a6; text-decoration: none;">+86 13387167170</a>
               </div>

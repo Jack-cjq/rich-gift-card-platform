@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { trackConversion, trackEvent, trackPageView, trackPageConversion } from './utils/gtag';
 import { generateEventId, getFacebookClickId, trackPixel, sendToCapi } from './utils/fb';
+import { trackLinkClick } from './utils/tracker';
 import './App.css';
 
 // Import pages
@@ -12,13 +13,22 @@ import Services from './pages/Services';
 import Contact from './pages/Contact';
 import FAQFooter from './components/FAQFooter';
 import ChatWidget from './components/ChatWidget';
+import { initTracker } from './utils/tracker';
 
 // 注册GSAP插件
 gsap.registerPlugin(ScrollTrigger);
 
+// Initialize tracker
+if (typeof window !== 'undefined') {
+  initTracker();
+}
+
 // WhatsApp处理函数
-const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quote for my gift card.') => {
-  const phoneNumber = '8619371138377';
+const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quote for my gift card.', ctaId: string = 'whatsapp-main') => {
+  const phoneNumber = '8615337211812';
+  
+  // Track AF link click
+  trackLinkClick(ctaId);
   
   // 跟踪转化事件
   trackConversion();
@@ -61,6 +71,9 @@ const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quo
 const handleTeamWhatsAppClick = (phoneNumber: string, memberName: string) => {
   const message = `Hello ${memberName}! I would like to get a quote for my gift card.`;
   
+  // Track AF link click
+  trackLinkClick(`whatsapp-team-${memberName.toLowerCase()}`);
+  
   // 跟踪转化事件
   trackConversion();
   trackEvent('team_whatsapp_click', {
@@ -97,8 +110,11 @@ const handleTeamWhatsAppClick = (phoneNumber: string, memberName: string) => {
 };
 
 // Telegram处理函数
-const handleTelegramClick = (username: string) => {
+const handleTelegramClick = (username: string, ctaId: string = 'telegram-main') => {
   const telegramUrl = `https://t.me/${username}`;
+  
+  // Track AF link click
+  trackLinkClick(ctaId);
   
   // 跟踪转化事件
   trackConversion();
@@ -134,8 +150,11 @@ const handleTelegramClick = (username: string) => {
 };
 
 // TikTok处理函数
-const handleTikTokClick = (username: string) => {
+const handleTikTokClick = (username: string, ctaId: string = 'tiktok-main') => {
   const tiktokUrl = `https://www.tiktok.com/@${username}`;
+  
+  // Track AF link click
+  trackLinkClick(ctaId);
   
   // 跟踪转化事件
   trackConversion();
@@ -236,7 +255,9 @@ const Navigation: React.FC = () => {
           {/* Social Media Buttons */}
           <div className="flex items-center space-x-3">
             <button 
-              onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for my gift card.')}
+              onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for my gift card.', 'whatsapp-nav')}
+              data-track="jump"
+              data-id="whatsapp-nav"
               className="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-sm"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -246,7 +267,9 @@ const Navigation: React.FC = () => {
             </button>
             
             <button 
-              onClick={() => handleTelegramClick('IT_gift_card')}
+              onClick={() => handleTelegramClick('IT_gift_card', 'telegram-nav')}
+              data-track="jump"
+              data-id="telegram-nav"
               className="bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2 text-sm"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -256,7 +279,9 @@ const Navigation: React.FC = () => {
             </button>
             
             <button 
-              onClick={() => handleTikTokClick('miss.rich77')}
+              onClick={() => handleTikTokClick('miss.rich77', 'tiktok-nav')}
+              data-track="jump"
+              data-id="tiktok-nav"
               className="bg-black text-white px-3 py-2 rounded-lg hover:bg-gray-800 transition-colors flex items-center space-x-2 text-sm"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -405,7 +430,9 @@ const HomePage: React.FC = () => {
 
               <div className="fade-up flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
                 <button 
-                  onClick={() => handleWhatsAppClick('Hello! I would like to start trading my gift cards.')}
+                  onClick={() => handleWhatsAppClick('Hello! I would like to start trading my gift cards.', 'whatsapp-hero')}
+                  data-track="jump"
+                  data-id="whatsapp-hero"
                   className="bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl"
                 >
                   Start Trading Now
@@ -752,12 +779,9 @@ const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Steam</h3>
                 <p className="text-gray-600 mb-6">Steam Card / eCode</p>
                 <button 
-                  onClick={() => {
-                    const phoneNumber = '8619371138377';
-                    const message = 'Hello! I would like to get a quote for gift cards.';
-                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappUrl, '_blank');
-                  }}
+                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.', 'whatsapp-steam')}
+                  data-track="jump"
+                  data-id="whatsapp-steam"
                   className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
                 >
                   Enquire Now
@@ -777,7 +801,9 @@ const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">XBox</h3>
                 <p className="text-gray-600 mb-6">XBox Physical Card</p>
                 <button 
-                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.')}
+                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.', 'whatsapp-xbox')}
+                  data-track="jump"
+                  data-id="whatsapp-xbox"
                   className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600"
                 >
                   Enquire Now
@@ -797,12 +823,9 @@ const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Apple</h3>
                 <p className="text-gray-600 mb-6">Apple Physical Card</p>
                 <button 
-                  onClick={() => {
-                    const phoneNumber = '8619371138377';
-                    const message = 'Hello! I would like to get a quote for gift cards.';
-                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-                    window.open(whatsappUrl, '_blank');
-                  }}
+                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.', 'whatsapp-apple')}
+                  data-track="jump"
+                  data-id="whatsapp-apple"
                   className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
                 >
                   Enquire Now
@@ -822,7 +845,9 @@ const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Razer</h3>
                 <p className="text-gray-600 mb-6">Razer Gold Card / code</p>
                 <button 
-                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.')}
+                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.', 'whatsapp-razer')}
+                  data-track="jump"
+                  data-id="whatsapp-razer"
                   className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600"
                 >
                   Enquire Now
@@ -904,7 +929,7 @@ const HomePage: React.FC = () => {
                 <p className="text-gray-600 mb-4">Manageress</p>
                 <div className="flex justify-center space-x-3">
                   <button 
-                    onClick={() => handleTeamWhatsAppClick('8619371138377', 'Trader_Ki')}
+                    onClick={() => handleTeamWhatsAppClick('8615337211812', 'Trader_Ki')}
                     className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -943,7 +968,7 @@ const HomePage: React.FC = () => {
                 <p className="text-gray-600 mb-4">Manageress</p>
                 <div className="flex justify-center space-x-3">
                   <button 
-                    onClick={() => handleTeamWhatsAppClick('8619371138377', 'Trader_Xing')}
+                    onClick={() => handleTeamWhatsAppClick('8615337211812', 'Trader_Xing')}
                     className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">

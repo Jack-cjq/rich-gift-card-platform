@@ -10,7 +10,7 @@ const Services: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.utils.toArray('.fade-up').forEach((element: any) => {
+      gsap.utils.toArray<Element>('.fade-up').forEach((element) => {
         gsap.fromTo(element, 
           { opacity: 0, y: 50 },
           {
@@ -278,7 +278,7 @@ const Services: React.FC = () => {
               <p className="text-gray-600 mb-6">Steam Card / eCode</p>
                 <button 
                   onClick={() => {
-                    const phoneNumber = '8619371138377';
+                    const phoneNumber = '8615337211812';
                     const message = 'Hello! I would like to get a quote for gift cards.';
                     const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
@@ -320,7 +320,7 @@ const Services: React.FC = () => {
               <p className="text-gray-600 mb-6">Apple Physical Card</p>
                 <button 
                   onClick={() => {
-                    const phoneNumber = '8619371138377';
+                    const phoneNumber = '8615337211812';
                     const message = 'Hello! I would like to get a quote for gift cards.';
                     const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
