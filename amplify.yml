@@ -23,3 +23,10 @@ frontend:
           value: 'DENY'
         - key: 'X-XSS-Protection'
           value: '1; mode=block'
+redirects:
+  - source: 'https://itgiftcard.com'
+    target: 'https://www.itgiftcard.com'
+    status: '302'
+  - source: '/<*>'
+    target: '/index.html'
+    status: '404-200'

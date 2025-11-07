@@ -147,8 +147,9 @@ export const handler = async (event) => {
   // Build Meta CAPI payload
   const metaPixelId = process.env.FB_PIXEL_ID;
   const metaToken = process.env.FB_ACCESS_TOKEN;
-  // Meta standard events: Lead for form submission, Contact for button clicks (inquiry/contact intent)
-  const metaEventName = event_name === 'af_lead' ? 'Lead' : 'Contact';
+  // Meta standard events: CompleteRegistration for form submission, Contact for button clicks
+  // CompleteRegistration is more explicit for form submissions than Lead
+  const metaEventName = event_name === 'af_lead' ? 'CompleteRegistration' : 'Contact';
 
   const metaBody = {
     data: [

@@ -11,9 +11,10 @@ const About: React.FC = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // 数字计数动画
-      gsap.utils.toArray('.count-up').forEach((element: any) => {
-        const target = parseInt(element.dataset.target);
-        gsap.fromTo(element, 
+      gsap.utils.toArray<Element>('.count-up').forEach((element) => {
+        const htmlElement = element as HTMLElement;
+        const target = parseInt(htmlElement.dataset.target || '0');
+        gsap.fromTo(htmlElement, 
           { textContent: 0 },
           {
             textContent: target,
@@ -21,7 +22,7 @@ const About: React.FC = () => {
             ease: "power2.out",
             snap: { textContent: 1 },
             scrollTrigger: {
-              trigger: element,
+              trigger: htmlElement,
               start: "top 80%",
               toggleActions: "play none none reverse"
             }
@@ -30,7 +31,7 @@ const About: React.FC = () => {
       });
 
       // 基础滚动动画
-      gsap.utils.toArray('.fade-up').forEach((element: any) => {
+      gsap.utils.toArray<Element>('.fade-up').forEach((element) => {
         gsap.fromTo(element, 
           { opacity: 0, y: 50 },
           {
@@ -48,7 +49,7 @@ const About: React.FC = () => {
       });
 
       // 旋转动画
-      gsap.utils.toArray('.rotate-animation').forEach((element: any) => {
+      gsap.utils.toArray<Element>('.rotate-animation').forEach((element) => {
         gsap.to(element, {
           rotation: 360,
           duration: 20,
@@ -58,7 +59,7 @@ const About: React.FC = () => {
       });
 
       // 浮动动画
-      gsap.utils.toArray('.float-animation').forEach((element: any) => {
+      gsap.utils.toArray<Element>('.float-animation').forEach((element) => {
         gsap.to(element, {
           y: -20,
           duration: 2,
@@ -69,7 +70,7 @@ const About: React.FC = () => {
       });
 
       // 脉冲动画
-      gsap.utils.toArray('.pulse-animation').forEach((element: any) => {
+      gsap.utils.toArray<Element>('.pulse-animation').forEach((element) => {
         gsap.to(element, {
           scale: 1.1,
           duration: 1.5,
@@ -80,16 +81,17 @@ const About: React.FC = () => {
       });
 
       // 进度条动画
-      gsap.utils.toArray('.progress-bar').forEach((element: any) => {
-        const width = element.dataset.width;
-        gsap.fromTo(element, 
+      gsap.utils.toArray<Element>('.progress-bar').forEach((element) => {
+        const htmlElement = element as HTMLElement;
+        const width = htmlElement.dataset.width || '0%';
+        gsap.fromTo(htmlElement, 
           { width: "0%" },
           {
             width: width,
             duration: 2,
             ease: "power2.out",
             scrollTrigger: {
-              trigger: element,
+              trigger: htmlElement,
               start: "top 80%",
               toggleActions: "play none none reverse"
             }
@@ -430,7 +432,7 @@ const About: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
                 onClick={() => {
-                  const phoneNumber = '8615337211812';
+                  const phoneNumber = '8613277156188';
                   const message = 'Hello! I would like to get a WhatsApp consultation for gift card trading.';
                   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                   window.open(whatsappUrl, '_blank');
@@ -444,7 +446,7 @@ const About: React.FC = () => {
               </button>
               <button 
                 onClick={() => {
-                  const phoneNumber = '8615337211812';
+                  const phoneNumber = '8613277156188';
                   const message = 'Hello! I would like to start trading my gift cards now.';
                   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
                   window.open(whatsappUrl, '_blank');
