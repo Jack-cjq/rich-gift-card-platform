@@ -279,8 +279,7 @@ const Services: React.FC = () => {
                 <button 
                   onClick={() => {
                     const phoneNumber = '8613277156188';
-                    const message = 'Hello! I would like to get a quote for gift cards.';
-                    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+                    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
                     window.open(whatsappUrl, '_blank');
                   }}
                   className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
@@ -321,8 +320,7 @@ const Services: React.FC = () => {
                 <button 
                   onClick={() => {
                     const phoneNumber = '8613277156188';
-                    const message = 'Hello! I would like to get a quote for gift cards.';
-                    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+                    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
                     window.open(whatsappUrl, '_blank');
                   }}
                   className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors"

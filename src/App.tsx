@@ -24,7 +24,7 @@ if (typeof window !== 'undefined') {
 }
 
 // WhatsApp处理函数
-const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quote for my gift card.', ctaId: string = 'whatsapp-main') => {
+const handleWhatsAppClick = (message: string = '', ctaId: string = 'whatsapp-main') => {
   const phoneNumber = '8613277156188';
   
   // Track AF link click
@@ -53,7 +53,7 @@ const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quo
   });
   
   // 使用更可靠的WhatsApp API格式
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  const whatsappUrl = message ? `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}` : `https://api.whatsapp.com/send?phone=${phoneNumber}`;
   console.log('WhatsApp URL:', whatsappUrl);
   
   try {
@@ -69,7 +69,7 @@ const handleWhatsAppClick = (message: string = 'Hello! I would like to get a quo
 
 // 团队成员WhatsApp处理函数
 const handleTeamWhatsAppClick = (phoneNumber: string, memberName: string) => {
-  const message = `Hello ${memberName}! I would like to get a quote for my gift card.`;
+  const message = '';
   
   // Track AF link click
   trackLinkClick(`whatsapp-team-${memberName.toLowerCase()}`);
@@ -96,7 +96,7 @@ const handleTeamWhatsAppClick = (phoneNumber: string, memberName: string) => {
     custom_data: { value: 1, currency: 'CNY', team_member: memberName }
   });
   
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+  const whatsappUrl = message ? `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}` : `https://api.whatsapp.com/send?phone=${phoneNumber}`;
   
   try {
     const newWindow = window.open(whatsappUrl, '_blank');
@@ -255,7 +255,7 @@ const Navigation: React.FC = () => {
           {/* Social Media Buttons */}
           <div className="flex items-center space-x-3">
             <button 
-              onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for my gift card.', 'whatsapp-nav')}
+              onClick={() => handleWhatsAppClick('', 'whatsapp-nav')}
               data-track="jump"
               data-id="whatsapp-nav"
               className="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2 text-sm"
@@ -430,7 +430,7 @@ const HomePage: React.FC = () => {
 
               <div className="fade-up flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">
                 <button 
-                  onClick={() => handleWhatsAppClick('Hello! I would like to start trading my gift cards.', 'whatsapp-hero')}
+                  onClick={() => handleWhatsAppClick('', 'whatsapp-hero')}
                   data-track="jump"
                   data-id="whatsapp-hero"
                   className="bg-teal-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-teal-700 transition-colors shadow-lg hover:shadow-xl"
@@ -779,7 +779,7 @@ const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Steam</h3>
                 <p className="text-gray-600 mb-6">Steam Card / eCode</p>
                 <button 
-                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.', 'whatsapp-steam')}
+                  onClick={() => handleWhatsAppClick('', 'whatsapp-steam')}
                   data-track="jump"
                   data-id="whatsapp-steam"
                   className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
@@ -801,7 +801,7 @@ const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">XBox</h3>
                 <p className="text-gray-600 mb-6">XBox Physical Card</p>
                 <button 
-                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.', 'whatsapp-xbox')}
+                  onClick={() => handleWhatsAppClick('', 'whatsapp-xbox')}
                   data-track="jump"
                   data-id="whatsapp-xbox"
                   className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600"
@@ -823,7 +823,7 @@ const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Apple</h3>
                 <p className="text-gray-600 mb-6">Apple Physical Card</p>
                 <button 
-                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.', 'whatsapp-apple')}
+                  onClick={() => handleWhatsAppClick('', 'whatsapp-apple')}
                   data-track="jump"
                   data-id="whatsapp-apple"
                   className="w-full bg-teal-600 text-white py-3 rounded-lg font-semibold hover:bg-teal-700 transition-colors"
@@ -845,7 +845,7 @@ const HomePage: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Razer</h3>
                 <p className="text-gray-600 mb-6">Razer Gold Card / code</p>
                 <button 
-                  onClick={() => handleWhatsAppClick('Hello! I would like to get a quote for gift cards.', 'whatsapp-razer')}
+                  onClick={() => handleWhatsAppClick('', 'whatsapp-razer')}
                   data-track="jump"
                   data-id="whatsapp-razer"
                   className="w-full bg-white text-teal-600 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-colors border border-teal-600"

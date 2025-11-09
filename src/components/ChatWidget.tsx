@@ -4,8 +4,7 @@ const ChatWidget: React.FC = () => {
   const handleWhatsAppClick = () => {
     // 可以设置默认的WhatsApp号码
     const phoneNumber = '8613277156188';
-    const message = 'Hello! I would like to get a quote for my gift card.';
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
     window.open(whatsappUrl, '_blank');
   };
 

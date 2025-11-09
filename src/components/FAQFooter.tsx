@@ -14,7 +14,7 @@ const FAQFooter: React.FC = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.utils.toArray('.fade-up').forEach((element: any) => {
+      gsap.utils.toArray<Element>('.fade-up').forEach((element) => {
         gsap.fromTo(element, 
           { opacity: 0, y: 30 },
           {
@@ -178,8 +178,7 @@ const FAQFooter: React.FC = () => {
               <button 
                 onClick={() => {
                   const phoneNumber = '8613277156188';
-                  const message = 'Hello! I would like to trade my gift cards now.';
-                  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
+                  const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
                   window.open(whatsappUrl, '_blank');
                 }}
                 className="text-teal-200 mb-4 hover:text-white transition-colors cursor-pointer"
