@@ -432,7 +432,7 @@ const About: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 
                 onClick={() => {
-                  const phoneNumber = '8613277156188';
+                  const phoneNumber = '85294590690';
                   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
                   window.open(whatsappUrl, '_blank');
                 }}
@@ -445,7 +445,7 @@ const About: React.FC = () => {
               </button>
               <button 
                 onClick={() => {
-                  const phoneNumber = '8613277156188';
+                  const phoneNumber = '85294590690';
                   const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
                   window.open(whatsappUrl, '_blank');
                 }}

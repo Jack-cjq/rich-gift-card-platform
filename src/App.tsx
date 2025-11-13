@@ -25,7 +25,7 @@ if (typeof window !== 'undefined') {
 
 // WhatsApp处理函数
 const handleWhatsAppClick = (message: string = '', ctaId: string = 'whatsapp-main') => {
-  const phoneNumber = '8613277156188';
+  const phoneNumber = '85294590690';
   
   // Track AF link click
   trackLinkClick(ctaId);
@@ -929,7 +929,7 @@ const HomePage: React.FC = () => {
                 <p className="text-gray-600 mb-4">Manageress</p>
                 <div className="flex justify-center space-x-3">
                   <button 
-                    onClick={() => handleTeamWhatsAppClick('8613277156188', 'Trader_Ki')}
+                    onClick={() => handleTeamWhatsAppClick('85294590690', 'Trader_Ki')}
                     className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -968,7 +968,7 @@ const HomePage: React.FC = () => {
                 <p className="text-gray-600 mb-4">Manageress</p>
                 <div className="flex justify-center space-x-3">
                   <button 
-                    onClick={() => handleTeamWhatsAppClick('8613277156188', 'Trader_Xing')}
+                    onClick={() => handleTeamWhatsAppClick('85294590690', 'Trader_Xing')}
                     className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -1007,7 +1007,7 @@ const HomePage: React.FC = () => {
                 <p className="text-gray-600 mb-4">Manageress</p>
                 <div className="flex justify-center space-x-3">
                   <button 
-                    onClick={() => handleTeamWhatsAppClick('8613277156188', 'Trader_Tian')}
+                    onClick={() => handleTeamWhatsAppClick('85294590690', 'Trader_Tian')}
                     className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
@@ -1046,7 +1046,7 @@ const HomePage: React.FC = () => {
                 <p className="text-gray-600 mb-4">Manageress</p>
                 <div className="flex justify-center space-x-3">
                   <button 
-                    onClick={() => handleTeamWhatsAppClick('8613277156188', 'Trader_Zhe')}
+                    onClick={() => handleTeamWhatsAppClick('85294590690', 'Trader_Zhe')}
                     className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer"
                   >
                     <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">

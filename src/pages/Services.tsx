@@ -278,7 +278,7 @@ const Services: React.FC = () => {
               <p className="text-gray-600 mb-6">Steam Card / eCode</p>
                 <button 
                   onClick={() => {
-                    const phoneNumber = '8613277156188';
+                    const phoneNumber = '85294590690';
                     const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
                     window.open(whatsappUrl, '_blank');
                   }}
@@ -319,7 +319,7 @@ const Services: React.FC = () => {
               <p className="text-gray-600 mb-6">Apple Physical Card</p>
                 <button 
                   onClick={() => {
-                    const phoneNumber = '8613277156188';
+                    const phoneNumber = '85294590690';
                     const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}`;
                     window.open(whatsappUrl, '_blank');
                   }}
